@@ -1,0 +1,35 @@
+{
+  "version": "0.0.0",
+  "name": "badge-designer",
+  "scripts": {
+    "build": "remix build",
+    "dev": "remix dev",
+    "start": "remix-serve ./build/index.js",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^2.16.8",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@remix-run/node": "^2.16.8",
+    "@remix-run/react": "^2.16.8",
+    "@remix-run/serve": "^2.16.8",
+    "isbot": "^4",
+    "pdf-lib": "^1.17.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "private": true,
+  "description": "Badge Designer built with Remix",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
