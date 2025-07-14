@@ -1,65 +1,47 @@
-import { AutoTable } from "@gadgetinc/react/auto/polaris";
-import {
-  Banner,
-  BlockStack,
-  Box,
-  Card,
-  Layout,
-  Link,
-  Page,
-  Text,
-} from "@shopify/polaris";
-import { api } from "../api";
+import React from "react";
+import { Link } from "@remix-run/react";
+import { Page, Card, Text, Box, Button, Layout, CalloutCard } from "@shopify/polaris";
 
 export default function Index() {
   return (
-    <Page title="App">
+    <Page title="All Quality Badges">
       <Layout>
         <Layout.Section>
-          <Banner tone="success">
-            <Text variant="bodyMd" as="p">
-              Successfully connected your Gadget app to Shopify
-            </Text>
-          </Banner>
+          <CalloutCard
+            title="Welcome to All Quality Badges"
+            illustration="https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg"
+            primaryAction={{
+              content: 'Start Designing Badges',
+              url: '/badge-designer'
+            }}
+          >
+            <p>Create professional name badges for your business. Design custom badges with your branding, customer information, and choose from multiple backing options.</p>
+          </CalloutCard>
         </Layout.Section>
+        
         <Layout.Section>
           <Card>
-            <BlockStack gap="200" inlineAlign="center">
-              <gadget-sparkle-button onClick={() => window.open(`/edit/preview?openShopifyOnboarding=true`, '_top')} style={{ width: "300px", marginTop: "32px", marginBottom: "32px" }}>
-                Start building your app
-              </gadget-sparkle-button>
-              <Text variant="bodyMd" as="p" alignment="center">
-                or edit this page's code directly:&nbsp;
-                <Link
-                  url={`/edit/files/web/routes/_app._index.tsx?openShopifyOnboarding=true`}
-                  target="_blank"
-                  removeUnderline
-                >
-                  web/routes/_app._index.tsx
-                </Link>
-              </Text>
-            </BlockStack>
-          </Card>
-        </Layout.Section>
-        <Layout.Section>
-          <Card padding="0">
-            {/* use Autocomponents to build UI quickly: https://docs.gadget.dev/guides/frontend/autocomponents  */}
-            <AutoTable
-              //@ts-ignore
-              model={api.shopifyShop}
-              columns={["name", "countryName", "currency", "customerEmail"]}
-            />
             <Box padding="400">
-              <Text variant="headingMd" as="h6">
-                Shop records fetched from:{" "}
-                <Link
-                  url={`/edit/model/DataModel-Shopify-Shop/data`}
-                  target="_blank"
-                  removeUnderline
-                >
-                  api/models/shopifyShop/data
-                </Link>
+              <Text variant="headingMd" as="h2">
+                Features
               </Text>
+              <Box paddingBlockStart="200">
+                <ul>
+                  <li>• Custom text with up to 4 lines</li>
+                  <li>• Multiple font options and sizes</li>
+                  <li>• Color customization</li>
+                  <li>• CSV bulk import</li>
+                  <li>• PDF export for printing</li>
+                  <li>• Pin, magnetic, or adhesive backing options</li>
+                </ul>
+              </Box>
+              <Box paddingBlockStart="400">
+                <Link to="/badge-designer">
+                  <Button variant="primary">
+                    Open Badge Designer
+                  </Button>
+                </Link>
+              </Box>
             </Box>
           </Card>
         </Layout.Section>

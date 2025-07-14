@@ -1,5 +1,5 @@
 import { Page } from "@shopify/polaris";
-import { BadgeDesigner } from "../components/BadgeDesigner";
+import BadgeDesigner from "../components/BadgeDesigner";
 
 export default function BadgeDesignerRoute() {
   return (
