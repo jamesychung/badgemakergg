@@ -1,0 +1,16 @@
+# This configuration file is for the Badge Designer extensions
+# It should reference the same app as your main Gadget project
+
+client_id = "ddf1f07f92beb9dbb46a7910993b18d8"
+name = "allqualitybadges-development"
+application_url = "https://allqualitybadges--development.gadget.app/api/shopify/install-or-render"
+embedded = true
+
+[build]
+include_config_on_deploy = false
+
+[auth]
+redirect_urls = ["https://allqualitybadges--development.gadget.app/api/connections/auth/shopify/callback"]
+
+[webhooks]
+api_version = "2025-07" 

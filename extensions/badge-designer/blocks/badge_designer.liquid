@@ -1,0 +1,82 @@
+{% comment %}
+  Badge Designer App Block
+  This block allows merchants to add a badge designer widget to their product pages
+{% endcomment %}
+
+<div class="badge-designer-block" data-block-id="{{ block.id }}">
+  <div class="badge-designer-container">
+    {% if block.settings.title != blank %}
+      <h3 class="badge-designer-title">{{ block.settings.title }}</h3>
+    {% endif %}
+    
+    {% if block.settings.show_preview %}
+      <div class="badge-preview-container">
+        <div class="badge-preview" id="badge-preview-{{ block.id }}">
+          <!-- Badge preview will be rendered here -->
+          <div class="badge-placeholder">
+            <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="80" fill="white" stroke="#ddd" stroke-width="2" rx="4"/>
+              <text x="100" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333">Your Name</text>
+              <text x="100" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Title</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    
+    <div class="badge-designer-actions">
+      <a 
+        href="https://allqualitybadges--development.gadget.app/public/badge-designer{% if template contains 'product' %}?product={{ product.handle }}{% endif %}"
+        target="_blank"
+        class="badge-designer-button badge-designer-button--{{ block.settings.button_size }}"
+        style="background-color: {{ block.settings.button_color }}; text-decoration: none; display: inline-block;"
+      >
+        {{ block.settings.button_text }}
+      </a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Badge Designer",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Design Your Badge"
+    },
+    {
+      "type": "text", 
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Start Designing"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#007cba"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button Size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_preview",
+      "label": "Show Badge Preview",
+      "default": true
+    }
+  ]
+}
+{% endschema %} 

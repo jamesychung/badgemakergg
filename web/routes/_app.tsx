@@ -1,4 +1,4 @@
-import { useLoaderData, Outlet } from "@remix-run/react";
+import { useLoaderData, Outlet, useLocation } from "@remix-run/react";
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { Page, Card, Text, Box } from "@shopify/polaris";
 import { NavMenu } from "../components/NavMenu";
@@ -11,7 +11,19 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 
 export default function() {
   const { gadgetConfig } = useLoaderData<typeof loader>();
+  const location = useLocation();
+  const path = location.pathname;
 
+  // Only enforce Admin context for admin routes, not public routes
+  const adminRoutes = ["/", "/badge-designer"]; // routes that need Shopify Admin
+  const publicRoutes = ["/public/badge-designer", "/badge-designer"]; // routes that don't need Admin
+
+  // If it's a public route, don't require Shopify Admin
+  if (publicRoutes.some(route => path.startsWith(route))) {
+    return <Outlet />;
+  }
+
+  // For admin routes, check if we're in Shopify Admin
   return gadgetConfig.shopifyInstallState ? (
     <>
       <NavMenu />
