@@ -119,6 +119,10 @@ class BadgeDesignerModal {
         this.handleAddToCart(event.data.payload);
       }
 
+      if (event.data?.action === "design-saved") {
+        this.handleDesignSaved(event.data.payload);
+      }
+
       if (event.data?.action === "close-modal") {
         this.close();
       }
@@ -160,6 +164,19 @@ class BadgeDesignerModal {
       console.error('Error adding to cart:', error);
       alert('Error adding badge to cart. Please try again.');
     });
+  }
+
+  handleDesignSaved(designData) {
+    // Handle design saved event
+    console.log('Design saved:', designData);
+    
+    // You can store the design in localStorage for later retrieval
+    if (designData.designId) {
+      localStorage.setItem(`badge-design-${designData.designId}`, JSON.stringify(designData));
+    }
+    
+    // Optionally show a success message
+    // alert('Design saved successfully!');
   }
 
   bindEvents() {

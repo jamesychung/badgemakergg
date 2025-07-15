@@ -168,8 +168,78 @@ const BadgeDesigner: React.FC<BadgeDesignerProps> = ({ productId: _productId }) 
       backing: 'pin',
     });
   };
-  const saveBadge = () => {
-    alert('Badge design saved! Data would be sent to cart in a real implementation.');
+  const saveBadge = async () => {
+    try {
+      const designData = {
+        productId: _productId,
+        badge,
+        timestamp: new Date().toISOString(),
+        designId: Date.now().toString()
+      };
+      
+      // Send to parent window for Shopify integration
+      if (typeof window !== 'undefined' && window.parent) {
+        window.parent.postMessage({
+          action: 'design-saved',
+          payload: designData
+        }, '*');
+      }
+      
+      alert(`Badge design saved! Design ID: ${designData.designId}`);
+      
+    } catch (error) {
+      console.error('Failed to save badge:', error);
+      alert('Failed to save badge design. Please try again.');
+    }
+  };
+
+  const addToCart = async () => {
+    try {
+      // Get the correct variant ID based on backing type
+      // This should be replaced with actual Shopify variant IDs
+      const getVariantId = (backingType: string) => {
+        // These are placeholder IDs - replace with actual Shopify variant IDs
+        switch (backingType) {
+          case 'pin':
+            return '123456789'; // Replace with actual Pin variant ID
+          case 'magnetic':
+            return '123456790'; // Replace with actual Magnetic variant ID
+          case 'adhesive':
+            return '123456791'; // Replace with actual Adhesive variant ID
+          default:
+            return '123456789'; // Default to Pin
+        }
+      };
+
+      const badgeData = {
+        variantId: getVariantId(badge.backing),
+        productId: _productId, // Keep product ID for reference
+        line1: badge.lines[0]?.text || '',
+        line2: badge.lines[1]?.text || '',
+        line3: badge.lines[2]?.text || '',
+        line4: badge.lines[3]?.text || '',
+        backgroundColor: badge.backgroundColor,
+        fontFamily: badge.lines[0]?.fontFamily || 'Arial',
+        backing: badge.backing,
+        designId: Date.now().toString(),
+        fullDesignData: badge,
+        price: totalPrice
+      };
+      
+      // Send to parent window for Shopify cart integration
+      if (typeof window !== 'undefined' && window.parent) {
+        window.parent.postMessage({
+          action: 'add-to-cart',
+          payload: badgeData
+        }, '*');
+      }
+      
+      alert(`Badge added to cart! Price: $${totalPrice}`);
+      
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+      alert('Failed to add badge to cart. Please try again.');
+    }
   };
 
   // Helper for alignment
@@ -532,12 +602,18 @@ const BadgeDesigner: React.FC<BadgeDesignerProps> = ({ productId: _productId }) 
               Add Multiple Badges
             </button>
           </div>
-          <div className="flex justify-end mt-2 mb-4">
+          <div className="flex justify-end gap-2 mt-2 mb-4">
             <button
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
               onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.preventDefault(); saveBadge(); }}
             >
-              Save
+              Save Design
+            </button>
+            <button
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.preventDefault(); addToCart(); }}
+            >
+              Add to Cart - ${totalPrice}
             </button>
           </div>
         </div>
