@@ -28,13 +28,6 @@ export default function PublicBadgeDesigner() {
         <script src="https://cdn.tailwindcss.com"></script>
         <script dangerouslySetInnerHTML={{
           __html: `
-            // Add post message communication for iframe
-            window.addEventListener('message', function(event) {
-              if (event.data.action === 'resize') {
-                // Handle iframe resizing if needed
-              }
-            });
-            
             // Send ready message to parent
             window.parent.postMessage({ action: 'iframe-ready' }, '*');
           `

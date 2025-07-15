@@ -50,7 +50,7 @@ export default function PublicBadgeDesigner() {
             </p>
           </header>
           <div className="border-t border-gray-200 pt-6">
-            <BadgeDesigner />
+            <BadgeDesigner productId={productId} />
           </div>
         </div>
       </div>

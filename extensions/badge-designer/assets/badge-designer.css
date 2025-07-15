@@ -1,36 +1,79 @@
 /* Badge Designer App Block Styles */
 .badge-designer-block {
-  margin: 20px 0;
-  padding: 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #fafafa;
+  margin: 24px 0;
+  padding: 32px 24px;
+  border: 1px solid #e1e5e9;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.badge-designer-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .badge-designer-container {
-  max-width: 400px;
+  max-width: 480px;
   margin: 0 auto;
 }
 
-.badge-designer-title {
-  margin: 0 0 15px 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
+/* Header Section */
+.badge-designer-header {
+  margin-bottom: 24px;
 }
 
+.badge-designer-title {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1.2;
+}
+
+.badge-icon {
+  color: #007cba;
+  flex-shrink: 0;
+}
+
+.badge-designer-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Enhanced Badge Preview */
 .badge-preview-container {
-  margin: 15px 0;
+  margin: 24px 0;
+}
+
+.badge-preview-wrapper {
+  position: relative;
+  display: inline-block;
 }
 
 .badge-preview {
   display: inline-block;
   margin: 0 auto;
-  padding: 10px;
+  padding: 16px;
   background: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e1e5e9;
+  transition: all 0.3s ease;
+}
+
+.badge-preview:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 .badge-placeholder {
@@ -39,118 +82,165 @@
   justify-content: center;
 }
 
+.badge-preview-label {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #007cba;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Features List */
+.badge-features {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.feature-icon {
+  flex-shrink: 0;
+}
+
+/* Call to Action Button */
 .badge-designer-actions {
-  margin-top: 15px;
+  margin: 28px 0 16px 0;
 }
 
 .badge-designer-button {
-  display: inline-block;
-  padding: 12px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
   border: none;
-  border-radius: 4px;
-  background-color: #007cba;
-  color: white;
+  border-radius: 12px;
   font-size: 1rem;
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  text-transform: none;
+  letter-spacing: 0.025em;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 124, 186, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-designer-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.badge-designer-button:hover::before {
+  left: 100%;
 }
 
 .badge-designer-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 124, 186, 0.4);
 }
 
 .badge-designer-button:active {
   transform: translateY(0);
 }
 
-/* Button sizes */
+/* Button Sizes */
 .badge-designer-button--small {
-  padding: 8px 16px;
-  font-size: 0.875rem;
+  padding: 12px 24px;
+  font-size: 0.9rem;
 }
 
 .badge-designer-button--medium {
-  padding: 12px 24px;
+  padding: 16px 32px;
   font-size: 1rem;
 }
 
 .badge-designer-button--large {
-  padding: 16px 32px;
-  font-size: 1.125rem;
+  padding: 20px 40px;
+  font-size: 1.1rem;
 }
 
-/* Modal styles (if using modal option) */
-.badge-designer-modal {
-  display: block;
-  position: fixed;
-  z-index: 10000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.5);
+/* Trust Indicators */
+.trust-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 16px;
+  flex-wrap: wrap;
 }
 
-.badge-designer-modal-content {
-  background-color: #fefefe;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 1200px;
-  position: relative;
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
-.badge-designer-modal-close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  cursor: pointer;
-}
-
-.badge-designer-modal-close:hover,
-.badge-designer-modal-close:focus {
-  color: black;
-  text-decoration: none;
-}
-
-/* Responsive design */
+/* Responsive Design */
 @media (max-width: 768px) {
   .badge-designer-block {
-    margin: 15px 0;
-    padding: 15px;
+    margin: 16px 0;
+    padding: 24px 16px;
   }
   
+  .badge-designer-title {
+    font-size: 1.3rem;
+  }
+  
+  .badge-features {
+    gap: 16px;
+  }
+  
+  .feature-item {
+    font-size: 0.8rem;
+  }
+  
+  .trust-indicators {
+    gap: 16px;
+  }
+  
+  .badge-designer-button {
+    padding: 14px 28px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
   .badge-designer-container {
     max-width: 100%;
   }
   
-  .badge-designer-title {
-    font-size: 1.125rem;
+  .badge-features {
+    flex-direction: column;
+    gap: 12px;
   }
   
-  .badge-preview {
-    padding: 8px;
-  }
-  
-  .badge-designer-button {
-    width: 100%;
-    margin-top: 10px;
-  }
-  
-  .badge-designer-modal-content {
-    width: 95%;
-    margin: 2% auto;
-    padding: 15px;
+  .trust-indicators {
+    flex-direction: column;
+    gap: 8px;
   }
 } 

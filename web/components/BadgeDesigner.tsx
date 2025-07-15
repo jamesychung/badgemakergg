@@ -79,6 +79,57 @@ const BadgeDesigner: React.FC<BadgeDesignerProps> = ({ productId: _productId }) 
   const [multipleBadges, setMultipleBadges] = useState<any[]>([]);
   const [editModalIndex, setEditModalIndex] = useState<number | null>(null);
 
+  // Function to capture and encode design data
+  const captureDesignData = () => {
+    const designData = {
+      lines: badge.lines,
+      backgroundColor: badge.backgroundColor,
+      backing: badge.backing,
+      timestamp: new Date().toISOString()
+    };
+    
+    // Encode design data as base64 to safely pass in URL
+    const encodedData = btoa(JSON.stringify(designData));
+    return encodedData;
+  };
+
+  // Function to handle Save & Continue
+  const handleSaveAndContinue = () => {
+    const designData = captureDesignData();
+    const productId = _productId;
+    
+    // Prepare badge data for Shopify cart
+    const badgeData = {
+      action: "add-to-cart",
+      payload: {
+        variantId: productId || "default-variant-id", // Use product ID or default
+        line1: badge.lines[0]?.text || '',
+        line2: badge.lines[1]?.text || '',
+        line3: badge.lines[2]?.text || '',
+        line4: badge.lines[3]?.text || '',
+        backgroundColor: badge.backgroundColor,
+        fontFamily: badge.lines[0]?.fontFamily || 'Arial',
+        backing: badge.backing,
+        designId: Date.now().toString(), // Generate unique design ID
+        fullDesignData: {
+          lines: badge.lines,
+          backgroundColor: badge.backgroundColor,
+          backing: badge.backing,
+          timestamp: new Date().toISOString()
+        }
+      }
+    };
+
+    // Send data to parent window (the Shopify storefront)
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage(badgeData, "*"); // Use * for development, or specific origin for production
+    } else {
+      // Fallback for when not in iframe
+      console.log('Badge data ready for cart:', badgeData);
+      alert('Badge design saved! (This would normally be added to cart)');
+    }
+  };
+
   // Helper to estimate text width for a given font size and string
   const measureTextWidth = (text: string, fontSize: number, fontFamily: string, bold: boolean, italic: boolean) => {
     const canvas = document.createElement('canvas');
@@ -435,12 +486,25 @@ const BadgeDesigner: React.FC<BadgeDesignerProps> = ({ productId: _productId }) 
               <h2 className="text-xl font-bold text-gray-800">Customize Your Badge</h2>
               <span className="text-xl font-bold text-red-600">1x3 Badge</span>
             </div>
-            <button
-              onClick={handleDownloadPDF}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-            >
-              Download PDF
-            </button>
+            <div className="flex gap-2">
+              {_productId && (
+                <button
+                  onClick={handleSaveAndContinue}
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors flex items-center gap-2"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1L9.5 6L14 6L10.5 9L12 14L8 11L4 14L5.5 9L2 6L6.5 6L8 1Z" fill="currentColor"/>
+                  </svg>
+                  Save & Continue
+                </button>
+              )}
+              <button
+                onClick={handleDownloadPDF}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              >
+                Download PDF
+              </button>
+            </div>
           </div>
           
           {/* Move background color label, swatches, and preview to the left, lined up with 'Text Lines'. Make font size for 'Background Color' and 'Text Lines' the same. */}

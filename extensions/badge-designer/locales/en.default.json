@@ -1,0 +1,17 @@
+{
+  "badge_designer": {
+    "title": "Design Your Badge",
+    "subtitle": "Create professional badges with custom text, colors, and styles",
+    "button_text": "Start Designing",
+    "preview_label": "Preview",
+    "features": {
+      "custom_text": "Custom Text & Fonts",
+      "colors_styles": "Colors & Styles", 
+      "instant_preview": "Instant Preview"
+    },
+    "trust_indicators": {
+      "professional_quality": "Professional Quality",
+      "fast_delivery": "Fast Delivery"
+    }
+  }
+} 
