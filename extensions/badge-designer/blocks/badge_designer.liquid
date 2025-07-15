@@ -3,6 +3,29 @@
   This block allows merchants to add a badge designer widget to their product pages
 {% endcomment %}
 
+{% comment %} Check if product has required tags {% endcomment %}
+{% assign show_badge_designer = false %}
+
+{% comment %} Check product type first {% endcomment %}
+{% if block.settings.required_product_type != blank %}
+  {% if product.type == block.settings.required_product_type %}
+    {% assign show_badge_designer = true %}
+  {% endif %}
+{% comment %} If no product type specified, check tags {% endcomment %}
+{% elsif block.settings.required_tags != blank %}
+  {% assign required_tags = block.settings.required_tags | split: ',' %}
+  {% for tag in required_tags %}
+    {% assign clean_tag = tag | strip %}
+    {% if product.tags contains clean_tag %}
+      {% assign show_badge_designer = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% else %}
+  {% assign show_badge_designer = true %}
+{% endif %}
+
+{% if show_badge_designer %}
 <div class="badge-designer-block" data-block-id="{{ block.id }}">
   <div class="badge-designer-container">
     
@@ -127,11 +150,34 @@
 <!-- Load Badge Designer Modal Script -->
 <script src="{{ 'badge-designer-modal.js' | asset_url }}" defer></script>
 
+{% endif %}
+
 {% schema %}
 {
   "name": "Badge Designer",
   "target": "section",
   "settings": [
+    {
+      "type": "text",
+      "id": "required_tags",
+      "label": "Required Product Tags",
+      "info": "Comma-separated list of tags. Badge designer will only show for products with these tags. Leave empty to show on all products.",
+      "placeholder": "badge-designer, customizable, personalized"
+    },
+    {
+      "type": "text",
+      "id": "required_product_type",
+      "label": "Required Product Type",
+      "info": "Enter the product type (e.g., 'Custom Badge', 'Badge Kit'). Badge designer will only show for products of this type. Leave empty to show on all products.",
+      "placeholder": "Custom Badge, Badge Kit"
+    },
+    {
+      "type": "text",
+      "id": "required_product_type",
+      "label": "Required Product Type",
+      "info": "Enter the product type (e.g., 'Custom Badge', 'Badge Kit'). Badge designer will only show for products of this type. Leave empty to show on all products.",
+      "placeholder": "Custom Badge, Badge Kit"
+    },
     {
       "type": "text",
       "id": "title",
