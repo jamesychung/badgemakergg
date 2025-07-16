@@ -2,6 +2,7 @@
 class BadgeDesignerModal {
   constructor(options = {}) {
     this.productId = options.productId || null;
+    this.shop = options.shop || null;
     this.isOpen = false;
     this.modal = null;
     this.backdrop = null;
@@ -52,8 +53,8 @@ class BadgeDesignerModal {
     // Use production Vercel URL as primary, fallback to localhost for local development
     const isLocalDev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
     const badgeDesignerUrl = isLocalDev 
-      ? `http://127.0.0.1:5173` + (this.productId ? `?product=${this.productId}` : '')
-      : `https://badge-designer-frontend.vercel.app` + (this.productId ? `?product=${this.productId}` : '');
+      ? `http://127.0.0.1:5173` + (this.productId ? `?product=${this.productId}` : '') + (this.shop ? `&shop=${this.shop}` : '')
+      : `https://badge-designer-frontend.vercel.app` + (this.productId ? `?product=${this.productId}` : '') + (this.shop ? `&shop=${this.shop}` : '');
     
     this.modal.innerHTML = `
       <div class="badge-modal-header" style="
@@ -216,9 +217,9 @@ class BadgeDesignerModal {
 }
 
 // Global function to create and open modal
-window.openBadgeDesignerModal = function(productId) {
+window.openBadgeDesignerModal = function(productId, shop) {
   if (!window.badgeDesignerModal) {
-    window.badgeDesignerModal = new BadgeDesignerModal({ productId });
+    window.badgeDesignerModal = new BadgeDesignerModal({ productId, shop });
   }
   window.badgeDesignerModal.open();
 }; 

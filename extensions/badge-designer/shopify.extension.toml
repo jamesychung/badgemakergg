@@ -3,4 +3,16 @@ api_version = "2024-10"
 [[extensions]]
 type = "theme"
 name = "Badge Designer"
-handle = "badge-designer" 
+handle = "badge-designer"
+
+[extensions.settings]
+  [
+    extensions.settings.fields,
+    {
+      key = "badge_designer_enabled",
+      type = "boolean",
+      name = "Enable Badge Designer",
+      description = "Show badge designer on product pages",
+      default = true
+    }
+  ] 
