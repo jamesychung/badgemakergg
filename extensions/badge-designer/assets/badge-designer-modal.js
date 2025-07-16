@@ -146,7 +146,9 @@ class BadgeDesignerModal {
           "Font Family": badgeData.fontFamily,
           "Backing Type": badgeData.backing,
           "Design ID": badgeData.designId,
-          "Design Data": JSON.stringify(badgeData.fullDesignData)
+          "Design Data": JSON.stringify(badgeData.fullDesignData),
+          "Custom Badge Design": "Yes", // Flag to indicate this is a custom design
+          "Badge Thumbnail": badgeData.thumbnailImage || '' // Store thumbnail as property
         }
       })
     })

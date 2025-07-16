@@ -1,0 +1,279 @@
+{% comment %}
+  Custom Cart Template for Badge Designer
+  This template displays custom badge thumbnails for badge designs
+{% endcomment %}
+
+<div class="page-width">
+  <div class="cart-header">
+    <h1 class="cart-header__title">{{ 'cart.general.title' | t }}</h1>
+    {%- if cart.item_count > 0 -%}
+      <p class="cart-header__text">{{ 'cart.general.items_with_count' | t: count: cart.item_count }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if cart.item_count > 0 -%}
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+      <div class="cart__items">
+        {%- for item in cart.items -%}
+          <div class="cart__item" data-cart-item data-line-item="{{ forloop.index }}">
+            <div class="cart__item-image">
+              {%- comment -%} Check if this is a custom badge design {%- endcomment -%}
+              {%- if item.properties['Custom Badge Design'] == 'Yes' and item.properties['Badge Thumbnail'] -%}
+                {%- comment -%} Display custom badge thumbnail {%- endcomment -%}
+                <img 
+                  src="{{ item.properties['Badge Thumbnail'] }}" 
+                  alt="Custom Badge Design"
+                  class="cart__item-image__img"
+                  style="max-width: 100px; height: auto; border: 1px solid #ddd; border-radius: 4px;"
+                >
+              {%- else -%}
+                {%- comment -%} Display default product image {%- endcomment -%}
+                <img 
+                  src="{{ item.image | img_url: '100x' }}" 
+                  alt="{{ item.image.alt | escape }}"
+                  class="cart__item-image__img"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </div>
+
+            <div class="cart__item-content">
+              <div class="cart__item-details">
+                <h3 class="cart__item-name">
+                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                </h3>
+                
+                {%- if item.product.has_only_default_variant == false -%}
+                  <p class="cart__item-variant">{{ item.variant.title }}</p>
+                {%- endif -%}
+
+                {%- comment -%} Display badge design details if it's a custom badge {%- endcomment -%}
+                {%- if item.properties['Custom Badge Design'] == 'Yes' -%}
+                  <div class="badge-design-details" style="margin-top: 8px; padding: 8px; background: #f8f9fa; border-radius: 4px; font-size: 0.9em;">
+                    <p style="margin: 0 0 4px 0;"><strong>Custom Badge Design:</strong></p>
+                    {%- if item.properties['Badge Text Line 1'] -%}
+                      <p style="margin: 2px 0;">Line 1: {{ item.properties['Badge Text Line 1'] }}</p>
+                    {%- endif -%}
+                    {%- if item.properties['Badge Text Line 2'] -%}
+                      <p style="margin: 2px 0;">Line 2: {{ item.properties['Badge Text Line 2'] }}</p>
+                    {%- endif -%}
+                    {%- if item.properties['Badge Text Line 3'] -%}
+                      <p style="margin: 2px 0;">Line 3: {{ item.properties['Badge Text Line 3'] }}</p>
+                    {%- endif -%}
+                    {%- if item.properties['Badge Text Line 4'] -%}
+                      <p style="margin: 2px 0;">Line 4: {{ item.properties['Badge Text Line 4'] }}</p>
+                    {%- endif -%}
+                    {%- if item.properties['Background Color'] -%}
+                      <p style="margin: 2px 0;">Background: {{ item.properties['Background Color'] }}</p>
+                    {%- endif -%}
+                    {%- if item.properties['Backing Type'] -%}
+                      <p style="margin: 2px 0;">Backing: {{ item.properties['Backing Type'] | capitalize }}</p>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+
+                {%- comment -%} Display other line item properties {%- endcomment -%}
+                {%- for property in item.properties -%}
+                  {%- unless property.first == 'Custom Badge Design' or property.first == 'Badge Thumbnail' or property.first == 'Design Data' or property.first contains 'Badge Text Line' or property.first == 'Background Color' or property.first == 'Font Family' or property.first == 'Backing Type' or property.first == 'Design ID' -%}
+                    <p class="cart__item-property">
+                      <span class="cart__item-property-label">{{ property.first }}:</span>
+                      <span class="cart__item-property-value">{{ property.last }}</span>
+                    </p>
+                  {%- endunless -%}
+                {%- endfor -%}
+              </div>
+
+              <div class="cart__item-quantity">
+                <label for="Quantity-{{ item.index | plus: 1 }}" class="visually-hidden">{{ 'products.product.quantity.label' | t }}</label>
+                <quantity-input class="quantity">
+                  <button class="quantity__button no-js-hidden" name="minus" type="button">
+                    <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: item.product.title | escape }}</span>
+                    {% render 'icon-minus' %}
+                  </button>
+                  <input class="quantity__input"
+                    type="number"
+                    name="updates[]"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    id="Quantity-{{ item.index | plus: 1 }}"
+                    data-index="{{ item.index | plus: 1 }}"
+                  >
+                  <button class="quantity__button no-js-hidden" name="plus" type="button">
+                    <span class="visually-hidden">{{ 'products.product.quantity.increase' | t: product: item.product.title | escape }}</span>
+                    {% render 'icon-plus' %}
+                  </button>
+                </quantity-input>
+              </div>
+
+              <div class="cart__item-price">
+                <span class="price">{{ item.final_line_price | money }}</span>
+              </div>
+
+              <div class="cart__item-remove">
+                <cart-remove-button>
+                  <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="button button--tertiary" aria-label="{{ 'sections.cart.remove_title' | t }}">
+                    {{ 'sections.cart.remove_title' | t }}
+                  </a>
+                </cart-remove-button>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="cart__footer">
+        <div class="cart__blocks">
+          {%- if section.settings.show_cart_note -%}
+            <div class="cart__block">
+              <label for="CartNote" class="visually-hidden">{{ 'sections.cart.note' | t }}</label>
+              <textarea class="cart__note" name="note" id="CartNote" placeholder="{{ 'sections.cart.note' | t }}">{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+
+          <div class="cart__block">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when '@app' -%}
+                  {% render block %}
+                {%- when 'subtotal' -%}
+                  <div class="js-contents" {{ block.shopify_attributes }}>
+                    <div class="totals">
+                      <h3 class="totals__subtotal">{{ 'sections.cart.subtotal' | t }}</h3>
+                      <p class="totals__subtotal-value">{{ cart.total_price | money_with_currency }}</p>
+                    </div>
+
+                    <div>
+                      {%- if cart.cart_level_discount_applications.size > 0 -%}
+                        <ul class="discounts list-unstyled">
+                          {%- for discount in cart.cart_level_discount_applications -%}
+                            <li class="discounts__discount discounts__discount--end">
+                              {%- render 'icon-discount' -%}
+                              {{ discount.title }}
+                              (-{{ discount.total_allocated_amount | money }})
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </div>
+
+                    <small class="tax-note">
+                      {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+                        {{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                      {%- elsif cart.taxes_included -%}
+                        {{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}
+                      {%- elsif shop.shipping_policy.body != blank -%}
+                        {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+                      {%- else -%}
+                        {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
+                      {%- endif -%}
+                    </small>
+                  </div>
+                {%- when 'buttons' -%}
+                  <div class="cart__ctas" {{ block.shopify_attributes }}>
+                    <noscript>
+                      <button type="submit" class="cart__update-button button button--secondary" form="cart">
+                        {{ 'sections.cart.update_cart' | t }}
+                      </button>
+                    </noscript>
+
+                    <button type="submit" id="checkout" class="cart__checkout-button button" name="checkout" form="cart"{% if cart.items.size == 0 %} disabled{% endif %}>
+                      {{ 'sections.cart.checkout' | t }}
+                    </button>
+                  </div>
+                {%- when 'complementary_products' -%}
+                  <product-recommendations class="complementary-products" data-url="{{ routes.product_recommendations_url }}">
+                    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+                      <aside aria-labelledby="complementary-products-heading" {{ block.shopify_attributes }}>
+                        <div class="complementary-products__container">
+                          {%- if block.settings.heading != blank -%}
+                            <h2 class="complementary-products__heading" id="complementary-products-heading">{{ block.settings.heading | escape }}</h2>
+                          {%- endif -%}
+                          <ul class="list-unstyled" role="list">
+                            {%- for product in recommendations.products limit: block.settings.products_to_show -%}
+                              <li>
+                                {% render 'product-card',
+                                  product_card_product: product,
+                                  media_size: "110",
+                                  show_secondary_image: false,
+                                  extend_height: false,
+                                  show_vendor: block.settings.show_vendor
+                                %}
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      </aside>
+                    {%- endif -%}
+                  </product-recommendations>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </form>
+  {%- else -%}
+    <div class="cart__empty">
+      <h1 class="cart__empty-title">{{ 'sections.cart.empty' | t }}</h1>
+      <a href="{{ routes.all_products_collection_url }}" class="button">
+        {{ 'general.continue_shopping' | t }}
+      </a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-cart.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_cart_note",
+      "default": false,
+      "label": "t:sections.main-cart.settings.show_cart_note.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subtotal",
+      "name": "t:sections.main-cart.blocks.subtotal.name",
+      "limit": 1
+    },
+    {
+      "type": "buttons",
+      "name": "t:sections.main-cart.blocks.buttons.name",
+      "limit": 1
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "complementary_products",
+      "name": "t:sections.main-cart.blocks.complementary_products.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Pairs well with",
+          "label": "t:sections.main-cart.blocks.complementary_products.settings.heading.label"
+        },
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 2,
+          "label": "t:sections.main-cart.blocks.complementary_products.settings.products_to_show.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_vendor",
+          "default": false,
+          "label": "t:sections.main-cart.blocks.complementary_products.settings.show_vendor.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

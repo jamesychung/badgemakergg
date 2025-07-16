@@ -18,6 +18,7 @@ import { handleDownloadPDF } from '../utils/pdfGenerator';
 import { BadgeTextLinesHeader } from './BadgeTextLinesHeader';
 import { BadgeEditPanel } from './BadgeEditPanel';
 import { BadgeLine, Badge } from '../types/badge';
+import { generateCartThumbnail } from '../utils/badgeThumbnail';
 
 interface BadgeDesignerProps {
   productId?: string | null;
@@ -196,20 +197,21 @@ const BadgeDesigner: React.FC<BadgeDesignerProps> = ({ productId: _productId }) 
   const addToCart = async () => {
     try {
       // Get the correct variant ID based on backing type
-      // This should be replaced with actual Shopify variant IDs
       const getVariantId = (backingType: string) => {
-        // These are placeholder IDs - replace with actual Shopify variant IDs
         switch (backingType) {
           case 'pin':
-            return '123456789'; // Replace with actual Pin variant ID
+            return '47037830299903'; // Pin variant ID
           case 'magnetic':
-            return '123456790'; // Replace with actual Magnetic variant ID
+            return '47037830332671'; // Magnetic variant ID
           case 'adhesive':
-            return '123456791'; // Replace with actual Adhesive variant ID
+            return '47037830365439'; // Adhesive variant ID
           default:
-            return '123456789'; // Default to Pin
+            return '47037830299903'; // Default to Pin
         }
       };
+
+      // Generate thumbnail image of the badge design
+      const thumbnailImage = await generateCartThumbnail(badge);
 
       const badgeData = {
         variantId: getVariantId(badge.backing),
@@ -223,7 +225,8 @@ const BadgeDesigner: React.FC<BadgeDesignerProps> = ({ productId: _productId }) 
         backing: badge.backing,
         designId: Date.now().toString(),
         fullDesignData: badge,
-        price: totalPrice
+        price: totalPrice,
+        thumbnailImage: thumbnailImage // Add the generated thumbnail
       };
       
       // Send to parent window for Shopify cart integration
@@ -602,6 +605,26 @@ const BadgeDesigner: React.FC<BadgeDesignerProps> = ({ productId: _productId }) 
               Add Multiple Badges
             </button>
           </div>
+          {/* Backing Options */}
+          <div className="mb-4">
+            <h3 className="font-semibold text-gray-700 mb-2">Backing Type</h3>
+            <div className="flex gap-3">
+              {backingOptions.map((option) => (
+                <label key={option.value} className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="backing"
+                    value={option.value}
+                    checked={badge.backing === option.value}
+                    onChange={(e) => setBadge({ ...badge, backing: e.target.value })}
+                    className="text-blue-600"
+                  />
+                  <span className="text-sm">{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
           <div className="flex justify-end gap-2 mt-2 mb-4">
             <button
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
