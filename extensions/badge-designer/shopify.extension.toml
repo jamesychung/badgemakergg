@@ -5,14 +5,9 @@ type = "theme"
 name = "Badge Designer"
 handle = "badge-designer"
 
-[extensions.settings]
-  [
-    extensions.settings.fields,
-    {
-      key = "badge_designer_enabled",
-      type = "boolean",
-      name = "Enable Badge Designer",
-      description = "Show badge designer on product pages",
-      default = true
-    }
-  ] 
+[[extensions.settings.fields]]
+key = "badge_designer_enabled"
+type = "boolean"
+name = "Enable Badge Designer"
+description = "Show badge designer on product pages"
+default = true 

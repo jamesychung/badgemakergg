@@ -11,6 +11,13 @@ export const schema: GadgetModel = {
       description: "Complete badge design data including lines, colors, fonts, etc."
     },
     
+    // Shop association (multi-tenant)
+    shopId: {
+      type: FieldType.String,
+      required: true,
+      description: "Associated Shopify shop ID for multi-tenant data isolation"
+    },
+    
     // Product association
     productId: {
       type: FieldType.String,

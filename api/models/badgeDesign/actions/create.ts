@@ -8,6 +8,11 @@ export const run: ActionRun = async ({ params, record, logger, api, connections 
     record.designId = `design_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
   
+  // Ensure shopId is provided for multi-tenant data isolation
+  if (!record.shopId) {
+    throw new Error("shopId is required for multi-tenant badge design creation");
+  }
+  
   // Extract design data and calculate pricing
   const designData = record.designData;
   
