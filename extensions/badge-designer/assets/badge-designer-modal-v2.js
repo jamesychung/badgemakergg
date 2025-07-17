@@ -57,6 +57,9 @@ class BadgeDesignerModal {
       ? `http://127.0.0.1:5173` + (this.productId ? `?product=${this.productId}` : '') + (this.shop ? `&shop=${this.shop}` : '')
       : `https://badge-designer-frontend.vercel.app` + (this.productId ? `?product=${this.productId}` : '') + (this.shop ? `&shop=${this.shop}` : '');
     
+    console.log('Constructed iframe URL:', badgeDesignerUrl);
+    console.log('Modal constructor - this.shop:', this.shop, 'this.productId:', this.productId);
+    
     this.modal.innerHTML = `
       <div class="badge-modal-header" style="
         display: flex;
@@ -132,16 +135,26 @@ class BadgeDesignerModal {
   }
 
   handleAddToCart(badgeData) {
-    console.log('handleAddToCart received badgeData:', badgeData);
-    
     // Add to Shopify cart using AJAX API
     fetch("/cart/add.js", {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         id: badgeData.variantId, // Shopify variant ID
-        quantity: badgeData.quantity || 1,
-        properties: badgeData.properties // Use the properties directly from badgeData
+        quantity: 1,
+        properties: {
+          "Badge Text Line 1": badgeData.line1 || '',
+          "Badge Text Line 2": badgeData.line2 || '',
+          "Badge Text Line 3": badgeData.line3 || '',
+          "Badge Text Line 4": badgeData.line4 || '',
+          "Background Color": badgeData.backgroundColor,
+          "Font Family": badgeData.fontFamily,
+          "Backing Type": badgeData.backing,
+          "Design ID": badgeData.designId,
+          "Design Data": JSON.stringify(badgeData.fullDesignData),
+          "Custom Badge Design": "Yes", // Flag to indicate this is a custom design
+          "Badge Thumbnail": badgeData.thumbnailImage || '' // Store thumbnail as property
+        }
       })
     })
     .then(response => response.json())

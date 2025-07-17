@@ -1,0 +1,41 @@
+{% comment %}
+  Badge Cart Item Snippet
+  Include this snippet in your cart template to display custom badge designs
+  Usage: {% render 'badge-cart-item', item: cart_item %}
+{% endcomment %}
+
+{% if item.properties['Custom Badge Design'] == 'Yes' %}
+  <div class="badge-design-details" style="margin-top: 8px; padding: 8px; background: #f8f9fa; border-radius: 4px; border-left: 3px solid #007cba;">
+    <p style="margin: 0 0 4px 0; font-weight: 600; color: #333;">Custom Badge Design:</p>
+    
+    {% comment %} Display badge text lines {% endcomment %}
+    {% if item.properties['Badge Text Line 1'] != blank %}
+      <p style="margin: 2px 0; font-size: 14px;"><strong>Line 1:</strong> {{ item.properties['Badge Text Line 1'] }}</p>
+    {% endif %}
+    {% if item.properties['Badge Text Line 2'] != blank %}
+      <p style="margin: 2px 0; font-size: 14px;"><strong>Line 2:</strong> {{ item.properties['Badge Text Line 2'] }}</p>
+    {% endif %}
+    {% if item.properties['Badge Text Line 3'] != blank %}
+      <p style="margin: 2px 0; font-size: 14px;"><strong>Line 3:</strong> {{ item.properties['Badge Text Line 3'] }}</p>
+    {% endif %}
+    {% if item.properties['Badge Text Line 4'] != blank %}
+      <p style="margin: 2px 0; font-size: 14px;"><strong>Line 4:</strong> {{ item.properties['Badge Text Line 4'] }}</p>
+    {% endif %}
+    
+    {% comment %} Display design options {% endcomment %}
+    {% if item.properties['Background Color'] != blank %}
+      <p style="margin: 2px 0; font-size: 14px;"><strong>Background:</strong> {{ item.properties['Background Color'] }}</p>
+    {% endif %}
+    {% if item.properties['Backing Type'] != blank %}
+      <p style="margin: 2px 0; font-size: 14px;"><strong>Backing:</strong> {{ item.properties['Backing Type'] | capitalize }}</p>
+    {% endif %}
+    {% if item.properties['Font Family'] != blank %}
+      <p style="margin: 2px 0; font-size: 14px;"><strong>Font:</strong> {{ item.properties['Font Family'] }}</p>
+    {% endif %}
+    
+    {% comment %} Display design ID if available {% endcomment %}
+    {% if item.properties['Design ID'] != blank %}
+      <p style="margin: 2px 0; font-size: 12px; color: #666;"><strong>Design ID:</strong> {{ item.properties['Design ID'] }}</p>
+    {% endif %}
+  </div>
+{% endif %} 

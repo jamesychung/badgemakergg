@@ -14,7 +14,7 @@ export const run: ActionRun = async ({ params, record, logger, api, connections 
   }
   
   // Extract design data and calculate pricing
-  const designData = record.designData;
+  const designData = record.designData as any;
   
   // Calculate pricing based on backing type
   const basePrice = 9.99;

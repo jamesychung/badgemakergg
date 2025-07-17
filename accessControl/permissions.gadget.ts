@@ -11,7 +11,21 @@ export const permissions: GadgetPermissions = {
   roles: {
     "shopify-app-users": {
       storageKey: "Role-Shopify-App",
+      default: {
+        read: true,
+        action: true,
+      },
       models: {
+        badgeDesign: {
+          read: true,
+          actions: {
+            create: true,
+            getByShop: true,
+          },
+        },
+        session: {
+          read: true,
+        },
         shopifyGdprRequest: {
           read: {
             filter:
@@ -48,6 +62,18 @@ export const permissions: GadgetPermissions = {
     },
     unauthenticated: {
       storageKey: "unauthenticated",
+      models: {
+        badgeDesign: {
+          read: true,
+          actions: {
+            create: true,
+            getByShop: true,
+          },
+        },
+        session: {
+          read: true,
+        },
+      },
     },
   },
 };
